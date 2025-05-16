@@ -37,16 +37,6 @@ class ProfileController extends Controller
         try {
             $user = User::find($request->id_edit);
 
-            // Check if email already exists for another user
-            $existingUser = User::where('email', $request->email)
-                ->where('id', '!=', $user->id)
-                ->first();
-            if ($existingUser) {
-                return back()->with('error', 'Email already exists for another user');
-            }
-            $user->email = $request->email;
-            $user->name = $request->name;
-
             if ($request->password != null) {
                 $user->password = Hash::make($request->password);
             }

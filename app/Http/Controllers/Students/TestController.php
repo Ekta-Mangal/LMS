@@ -40,11 +40,20 @@ class TestController extends Controller
                 ]);
             }
 
+            $title = DB::table('question_master')
+                ->join('module_master', 'question_master.module_id', '=', 'module_master.id')
+                ->join('course_master', 'module_master.course_id', '=', 'course_master.id')
+                ->where('question_master.quiz_id', $quiz_id)
+                ->select('course_master.title as course_title')
+                ->distinct()
+                ->first();
             $questions = DB::table('question_master')
                 ->where('quiz_id', $quiz_id)
                 ->get();
 
-            return view('Students.assessment.question', compact('questions'));
+
+            // dd($title, $questions);
+            return view('Students.assessment.question', compact('questions', 'title'));
         } catch (Exception $e) {
             return back()->with("error", "Something Went Wrong");
         }
@@ -169,6 +178,12 @@ class TestController extends Controller
                     'module_status' => 'Completed',
                     'approved_by' => 'Server',
                     'completed_on' => now()
+                ]);
+            DB::table('users')
+                ->where('empid', $userId)
+                ->update([
+                    'upgrade_level_status' => 'Completed',
+                    'processed_by' => 'Server'
                 ]);
         }
     }

@@ -13,7 +13,8 @@ class ModuleApproveController extends Controller
     public function view()
     {
         try {
-            $WaitingData = DB::table('user_progress')
+            $user = Auth::user();
+            $WaitingDataQuery = DB::table('user_progress')
                 ->join('users', 'user_progress.empid', '=', 'users.empid')
                 ->join('course_master', 'user_progress.course_id', '=', 'course_master.id')
                 ->join('module_master', 'user_progress.module_id', '=', 'module_master.id')
@@ -28,10 +29,10 @@ class ModuleApproveController extends Controller
                     'user_progress.submit_for_approval',
                     'user_progress.approval_status',
                     DB::raw("CASE 
-                        WHEN user_progress.module_status = 'Waiting' AND user_progress.approval_status = 'Waiting' THEN 'Re-Attempt'
-                        WHEN user_progress.module_status = 'In Progress' AND user_progress.approval_status = 'Waiting' THEN 'First Attempt'
-                        ELSE 'N/A' 
-                    END as acceptance_status")
+                    WHEN user_progress.module_status = 'Waiting' AND user_progress.approval_status = 'Waiting' THEN 'Re-Attempt'
+                    WHEN user_progress.module_status = 'In Progress' AND user_progress.approval_status = 'Waiting' THEN 'First Attempt'
+                    ELSE 'N/A' 
+                END as acceptance_status")
                 )
                 ->where(function ($query) {
                     $query->where('user_progress.module_status', 'In Progress')
@@ -40,8 +41,14 @@ class ModuleApproveController extends Controller
                 ->orWhere(function ($query) {
                     $query->where('user_progress.module_status', 'Waiting')
                         ->where('user_progress.approval_status', 'Waiting');
-                })
-                ->get();
+                });
+
+            // Role-based filter
+            if ($user->role === 'L3') {
+                $WaitingDataQuery->whereIn('users.role', ['L2', 'L1']);
+            }
+
+            $WaitingData = $WaitingDataQuery->get();
 
             return view('admin.approval.module', compact('WaitingData'));
         } catch (Exception $e) {

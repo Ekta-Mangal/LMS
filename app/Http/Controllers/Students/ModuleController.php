@@ -18,13 +18,20 @@ class ModuleController extends Controller
             $module_id = $request->id;
 
             $moduleDetails = DB::table('module_master')
-                ->where('id', $module_id)
+                ->join('course_master', 'module_master.course_id', '=', 'course_master.id')
+                ->where('module_master.id', $module_id)
+                ->select(
+                    'module_master.*',
+                    'course_master.title as course_title'
+                )
                 ->first();
+
 
             $userProgress = DB::table('user_progress')
                 ->where('module_id', $module_id)
                 ->where('empid', $user)
                 ->first();
+            // dd($moduleDetails);
 
             $html = view('Students.course.moduledetails', compact('moduleDetails', 'userProgress'))->render();
 
@@ -39,7 +46,14 @@ class ModuleController extends Controller
         try {
             $user = Auth::user()->empid;
             $module_id = $request->id;
-            $module = DB::table('module_master')->where('id', $module_id)->first();
+            $module = DB::table('module_master')
+                ->join('course_master', 'module_master.course_id', '=', 'course_master.id')
+                ->where('module_master.id', $module_id)
+                ->select(
+                    'module_master.*',
+                    'course_master.title as course_title'
+                )
+                ->first();
 
 
             // Determine the view based on prerequisite requirement
@@ -98,6 +112,7 @@ class ModuleController extends Controller
                 ->where('empid', $user)
                 ->update(['module_status' => 'In Progress']);
 
+            // dd($module, $moduleDetails);
             $html = view($viewName, compact('module', 'moduleDetails'))->render();
 
             return response()->json(['html' => $html, 'success' => true]);

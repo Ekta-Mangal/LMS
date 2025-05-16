@@ -13,11 +13,18 @@ class LevelUpgradeController extends Controller
     public function view()
     {
         try {
-            $users = DB::table('users')
-                ->select('empid', 'name', 'location', 'designation', 'role', 'process', 'subprocess', 'reporting_manager', 'badge_level', 'upgrade_level_status', 'submit_for_approval')
-                ->where('upgrade_level_status', "Waiting")
-                ->get();
+            $user = Auth::user();
 
+            $query = DB::table('users')
+                ->select('empid', 'name', 'location', 'designation', 'role', 'client_name', 'process', 'subprocess', 'reporting_manager', 'badge_level', 'upgrade_level_status', 'submit_for_approval')
+                ->where('upgrade_level_status', 'Waiting');
+
+            // Apply role-based filtering
+            if ($user->role === 'L3') {
+                $query->whereIn('role', ['L2', 'L1']);
+            }
+
+            $users = $query->get();
             if ($users->isEmpty()) {
                 $user = "";
             }
@@ -48,7 +55,6 @@ class LevelUpgradeController extends Controller
     {
         try {
             $empid = $request->empid;
-            $designation = $request->designation;
             $role = $request->role;
             $badge_level = $request->badge_level;
             $userId = Auth::user()->empid;
@@ -69,7 +75,6 @@ class LevelUpgradeController extends Controller
             DB::table('users')
                 ->where('empid', $empid)
                 ->update([
-                    'designation' => $designation,
                     'role' => $role,
                     'badge_level' => $badge_level,
                     'processed_by' => $userId,

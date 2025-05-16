@@ -63,32 +63,34 @@ class DashboardController extends Controller
             $silverCount = 0;
             $goldCount = 0;
             $platinumCount = 0;
+            $silverEligible = 0;
+            $goldEligible = 0;
+            $platinumEligible = 0;
 
             foreach ($Count as $user) {
                 switch ($user->badge_level) {
                     case 'Silver':
-                        if ($user->upgrade_level_status === 'Completed') {
+                        if ($user->upgrade_level_status === 'Completed' || $user->upgrade_level_status === 'Waiting') {
                             $silverCount++;
+                        } else if ($user->upgrade_level_status === 'Pending') {
+                            $silverEligible++;
                         }
-                        // If upgrade_level_status is 'pending' or 'waiting', count remains unchanged (0)
                         break;
 
                     case 'Gold':
-                        if ($user->upgrade_level_status === 'Completed') {
+                        if ($user->upgrade_level_status === 'Completed' || $user->upgrade_level_status === 'Waiting') {
                             $goldCount++;
+                        } else if ($user->upgrade_level_status === 'Pending') {
+                            $goldEligible++;
                         }
-                        // elseif (in_array($user->upgrade_level_status, ['Pending', 'Waiting'])) {
-                        //     $silverCount++; // Increment silverCount if gold user is Pending/Waiting
-                        // }
                         break;
 
                     case 'Platinum':
-                        if ($user->upgrade_level_status === 'Completed') {
+                        if ($user->upgrade_level_status === 'Completed' || $user->upgrade_level_status === 'Waiting') {
                             $platinumCount++;
+                        } else if ($user->upgrade_level_status === 'Pending') {
+                            $platinumEligible++;
                         }
-                        // elseif (in_array($user->upgrade_level_status, ['Pending', 'Waiting'])) {
-                        //     $goldCount++; // Increment goldCount if platinum user is Pending/Waiting
-                        // }
                         break;
                 }
             }
@@ -100,8 +102,28 @@ class DashboardController extends Controller
             $silverCount = $silverCount ?: 0;
             $goldCount = $goldCount ?: 0;
             $platinumCount = $platinumCount ?: 0;
+            $silverEligible = $silverEligible ?: 0;
+            $goldEligible = $goldEligible ?: 0;
+            $platinumEligible = $platinumEligible ?: 0;
 
-            return view('dashboard', compact('Courses', 'role', 'enrolledCourses', 'courseStatuses', 'pendingApprovalCounts', 'distinctUserCount', 'completedUsersCount', 'inProgressUsersCount', 'silverCount', 'goldCount', 'platinumCount'));
+            // dd(
+            //     $Courses,
+            //     $role,
+            //     $enrolledCourses,
+            //     $courseStatuses,
+            //     $pendingApprovalCounts,
+            //     $distinctUserCount,
+            //     $completedUsersCount,
+            //     $inProgressUsersCount,
+            //     $silverCount,
+            //     $goldCount,
+            //     $platinumCount,
+            //     $silverEligible,
+            //     $goldEligible,
+            //     $platinumEligible
+            // );
+
+            return view('dashboard', compact('Courses', 'role', 'enrolledCourses', 'courseStatuses', 'pendingApprovalCounts', 'distinctUserCount', 'completedUsersCount', 'inProgressUsersCount', 'silverCount', 'goldCount', 'platinumCount', 'silverEligible', 'goldEligible', 'platinumEligible'));
         } catch (Exception $e) {
             return back()->with("error", "Something Went Wrong");
         }

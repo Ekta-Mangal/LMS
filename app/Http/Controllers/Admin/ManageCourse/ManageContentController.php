@@ -188,7 +188,9 @@ class ManageContentController extends Controller
     public function editquiz(Request $request)
     {
         try {
+            $userId = Auth::user()->empid;
             $module_id = $request->module_id;
+
             $quizData = DB::table('quiz_master as q')
                 ->leftJoin('question_master as qm', 'q.id', '=', 'qm.quiz_id')
                 ->where('q.module_id', $module_id)
@@ -212,7 +214,7 @@ class ManageContentController extends Controller
                 )
                 ->get()
                 ->groupBy('quiz_id')
-                ->map(function ($quiz) {
+                ->map(function ($quiz) use ($userId) {
                     $quizDetails = $quiz->first();
                     return [
                         'quiz_id' => $quizDetails->quiz_id,
@@ -222,8 +224,7 @@ class ManageContentController extends Controller
                         'quiz_description' => $quizDetails->quiz_description,
                         'passing_marks' => $quizDetails->passing_marks,
                         'allow_attempts' => $quizDetails->allow_attempts,
-                        'created_by' => $quizDetails->created_by,
-                        'created_at' => $quizDetails->created_at,
+                        'updated_by' => $userId,
                         'questions' => $quiz->map(function ($q) {
                             return [
                                 'question_id' => $q->question_id,
@@ -237,10 +238,11 @@ class ManageContentController extends Controller
                         })->values(),
                     ];
                 })->values();
+
             $html = view('admin.managecontent.editquiz', compact('module_id', 'quizData'))->render();
             return response()->json(['html' => $html, 'success' => true]);
-        } catch (Exception $e) {
-            return back()->with("error", "Something Went Wrong");
+        } catch (\Exception $e) {
+            return back()->with("error", "Something went wrong");
         }
     }
 
@@ -273,8 +275,7 @@ class ManageContentController extends Controller
                 'title' => $sanitizedFileName,
                 'type' => 'pdf',
                 'path' => "$folderPath/$sanitizedFileName",
-                'created_by' => $userId,
-                'created_at' => now(),
+                'updated_by' => $userId
             ]);
         }
 

@@ -51,37 +51,76 @@ class CertifiController extends Controller
     {
         try {
             $user = Auth::user()->name;
+            $userid = Auth::user()->empid;
             $course_name = $request->course;
-            $badge = DB::table('course_master')
-                ->where('title', $course_name)
-                ->value('badge');
 
-            if (!$badge) {
-                return back()->with("error", "Badge level not found for the selected course.");
+            // Get course_id and badge from course_master
+            $course = DB::table('course_master')
+                ->where('title', $course_name)
+                ->select('id', 'badge')
+                ->first();
+
+            if (!$course) {
+                return back()->with("error", "Course Details not found for the selected course.");
             }
 
-            // Generate PDF from Blade template
+            // Get issue_date from user_progress
+            $issue = DB::table('user_progress')
+                ->where('empid', $userid)
+                ->where('course_id', $course->id)
+                ->where('approval_status', "Approved")
+                ->where('approved_by', "Server")
+                ->select('issue_date')
+                ->first();
+
+            // Determine issue date
+            if ($issue && $issue->issue_date) {
+                $issueDate = \Carbon\Carbon::parse($issue->issue_date);
+            } else {
+                $issueDate = now();
+
+                // Update DB with current issue date
+                DB::table('user_progress')
+                    ->where('empid', $userid)
+                    ->where('course_id', $course->id)
+                    ->where('approval_status', "Approved")
+                    ->where('approved_by', "Server")
+                    ->update(['issue_date' => $issueDate->format('Y-m-d')]);
+            }
+
+            // Format issue date like "April 11th, 2025"
+            $day = $issueDate->day;
+            $suffix = match (true) {
+                $day % 100 >= 11 && $day % 100 <= 13 => 'th',
+                $day % 10 == 1 => 'st',
+                $day % 10 == 2 => 'nd',
+                $day % 10 == 3 => 'rd',
+                default => 'th',
+            };
+            $formattedIssueDate = $issueDate->format("F") . " " . $day . $suffix . ", " . $issueDate->format("Y");
+
+            // Generate PDF
             $pdf = Pdf::loadView('certificate.layout', [
                 'course_name' => $course_name,
                 'employee_name' => $user,
-                'badge_level' => $badge
+                'issue_date' => $formattedIssueDate,
+                'badge_level' => $course->badge
             ])->setPaper('A4', 'landscape');
-            // dd($pdf);
 
+
+            // return $pdf->stream("{$user}_Certificate.pdf");
             return $pdf->download("{$user}_Certificate.pdf");
         } catch (\Exception $e) {
-            // dd($e->getMessage());
             return back()->with("error", "Something went wrong while generating the certificate.");
         }
     }
 
-    public function layout(Request $request)
+    public function layout()
     {
         try {
-            return view('certificate.layout');
-        } catch (\Exception $e) {
-            // dd($e->getMessage());
-            return back()->with("error", "Something went wrong while generating the certificate.");
+            return view('certificate.layout1');
+        } catch (Exception $e) {
+            return back()->with("error", "Something Went Wrong");
         }
     }
 }
