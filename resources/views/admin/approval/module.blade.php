@@ -6,22 +6,24 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="card card-primary card-outline">
+                            <div class="card-header">
+                                <h1 class="card-title">Module Completion Requests</h1>
+                            </div>
                             <div class="card-body">
                                 <div class="row mt-4">
                                     <div class="col-md-12">
-                                        <h3 class="text-center">Module Completion Requests</h3>
                                         <div class="table-responsive">
                                             <table class="table table-bordered text-center" id="manageData">
-                                                <thead class="thead-dark">
+                                                <thead class="thead-custom">
                                                     <tr>
-                                                        <th>S.No.</th>
-                                                        <th>Employee ID</th>
-                                                        <th>Employee Name</th>
-                                                        <th>Course Name</th>
-                                                        <th>Module Name</th>
-                                                        <th>Approval Submitted Date</th>
-                                                        <th>Acceptance Status</th>
-                                                        <th>Action</th>
+                                                        <th style="width: 5%;">S.No.</th>
+                                                        <th style="width: 10%;">Employee ID</th>
+                                                        <th style="width: 15%;">Employee Name</th>
+                                                        <th style="width: 15%;">Course Name</th>
+                                                        <th style="width: 15%;">Module Name</th>
+                                                        <th style="width: 15%;">Approval Submitted Date</th>
+                                                        <th style="width: 10%;">Acceptance Status</th>
+                                                        <th style="width: 15%;">Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -37,13 +39,13 @@
                                                             <td>
                                                                 <button type="button"
                                                                     class="btn bg-gradient-success text-white"
-                                                                    style="padding: 2px 10px; font-size: 16px;"
+                                                                    style="padding: 1px 6px; font-size: 12px;"
                                                                     onclick="accept_module('{{ $data->module_id }}', '{{ $data->empid }}')">
-                                                                    Accept
+                                                                    Approve
                                                                 </button>
                                                                 <button type="button"
                                                                     class="btn bg-gradient-danger text-white"
-                                                                    style="padding: 2px 10px; font-size: 16px;"
+                                                                    style="padding: 1px 6px; font-size: 12px;"
                                                                     onclick="reject_module('{{ $data->module_id }}', '{{ $data->empid }}')">
                                                                     Decline
                                                                 </button>
@@ -80,53 +82,59 @@
         });
 
         function accept_module(module_id, empid) {
-            $.ajax({
-                url: "{{ route('module_completetion_accept') }}",
-                type: 'POST',
-                data: {
-                    "_token": "{{ csrf_token() }}",
-                    "module_id": module_id,
-                    "empid": empid
-                },
-                success: function(response) {
-                    if (response.success) {
-                        toastr.success(response.message);
-                        setTimeout(function() {
-                            location.reload();
-                        }, 2000);
-                    } else {
-                        toastr.error(response.message);
+            var result = confirm('Do you want to accept the user request for module completion?');
+            if (result == true) {
+                $.ajax({
+                    url: "{{ route('module_completetion_accept') }}",
+                    type: 'POST',
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        "module_id": module_id,
+                        "empid": empid
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            toastr.success(response.message);
+                            setTimeout(function() {
+                                location.reload();
+                            }, 2000);
+                        } else {
+                            toastr.error(response.message);
+                        }
+                    },
+                    error: function(xhr) {
+                        toastr.error(xhr.responseJSON?.message || 'Something went wrong. Please try again.');
                     }
-                },
-                error: function(xhr) {
-                    toastr.error(xhr.responseJSON?.message || 'Something went wrong. Please try again.');
-                }
-            });
-        }
+                });
+            }
+        };
 
         function reject_module(module_id, empid) {
-            $.ajax({
-                url: "{{ route('module_completetion_reject') }}",
-                type: 'POST',
-                data: {
-                    "_token": "{{ csrf_token() }}",
-                    "module_id": module_id,
-                    "empid": empid
-                },
-                success: function(response) {
-                    if (response.success) {
-                        toastr.success(response.message);
-                        setTimeout(function() {
-                            location.reload();
-                        }, 2000);
-                    } else {
-                        toastr.error(response.message);
+            var result = confirm('Do you want to decline the user request for module completion?');
+            if (result == true) {
+                $.ajax({
+                    url: "{{ route('module_completetion_reject') }}",
+                    type: 'POST',
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        "module_id": module_id,
+                        "empid": empid
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            toastr.success(response.message);
+                            setTimeout(function() {
+                                location.reload();
+                            }, 2000);
+                        } else {
+                            toastr.error(response.message);
+                        }
+                    },
+                    error: function(xhr) {
+                        toastr.error(xhr.responseJSON?.message || 'Something went wrong. Please try again.');
                     }
-                },
-                error: function(xhr) {
-                    toastr.error(xhr.responseJSON?.message || 'Something went wrong. Please try again.');
-                }
-            });
-        }
+                });
+            }
+        };
     </script>
 @endsection

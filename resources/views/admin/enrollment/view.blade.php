@@ -6,12 +6,15 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="card card-primary card-outline">
+                            <div class="card-header">
+                                <h1 class="card-title">User Enrollment Details</h1>
+                            </div>
                             <div class="card-body">
                                 <div class="row mt-4">
                                     <div class="col-md-12">
                                         <div class="table-responsive">
                                             <table id="manageData" class="table table-bordered">
-                                                <thead class="thead-dark">
+                                                <thead class="thead-custom">
                                                     <tr>
                                                         <th>S.No.</th>
                                                         <th>Emp ID</th>

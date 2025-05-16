@@ -3,7 +3,7 @@
         <!-- Course Title -->
         <div
             style="text-align: center; font-size: 25px; font-weight: bold; padding: 20px; border: 1px solid #ccc; margin-bottom: 20px;">
-            Level - 1 Course On QMS & Its Applications
+            {{ $module->course_title }}
         </div>
 
         <!-- Module Details Button -->
@@ -58,7 +58,7 @@
                         @elseif ($test->assessment_status === 'Waiting')
                             <button type="button" class="btn bg-gradient-danger text-white"
                                 style="padding: 10px 20px; font-size: 16px;" disabled>
-                                Wait for Re-Attempt
+                                Wait for 24Hrs to Re-Attempt
                             </button>
                         @elseif ($test->assessment_status === 'Pending')
                             @if (is_null($test->assessment_result))

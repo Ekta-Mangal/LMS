@@ -16,7 +16,7 @@ class CheckUserRole
     public function handle(Request $request, Closure $next): Response
     {
         if ($request->user() && $request->user()->role !== 'Admin') {
-            return response()->json(['message' => 'Unauthorized'], 403);
+            return redirect()->back()->with('error', 'Unauthorized: You do not have access.');
         }
         return $next($request);
     }

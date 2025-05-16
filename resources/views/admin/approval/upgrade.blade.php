@@ -6,18 +6,19 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="card card-primary card-outline">
+                            <div class="card-header">
+                                <h1 class="card-title">Level Upgrade Requests</h1>
+                            </div>
                             <div class="card-body">
                                 <div class="row mt-4">
                                     <div class="col-md-12">
-                                        <h3 class="text-center">Level Upgrade Requests</h3>
                                         <div class="table-responsive">
                                             <table class="table table-bordered text-center" id="manageData">
-                                                <thead class="thead-dark">
+                                                <thead class="thead-custom">
                                                     <tr>
                                                         <th>S.No.</th>
                                                         <th>Employee ID</th>
                                                         <th>Employee Name</th>
-                                                        <th>Location</th>
                                                         <th>Designation</th>
                                                         <th>Level</th>
                                                         <th>Process</th>
@@ -34,7 +35,6 @@
                                                             <td>{{ $index + 1 }}</td>
                                                             <td>{{ $data->empid }}</td>
                                                             <td>{{ $data->name }}</td>
-                                                            <td>{{ $data->location }}</td>
                                                             <td>{{ $data->designation }}</td>
                                                             <td>{{ $data->role }}</td>
                                                             <td>{{ $data->process }}</td>
@@ -47,7 +47,7 @@
                                                                     class="btn bg-gradient-success text-white"
                                                                     style="padding: 2px 10px; font-size: 16px;"
                                                                     onclick="acceptUpgrade('{{ $data->empid }}')">
-                                                                    Accept
+                                                                    Approve
                                                                 </button>
                                                                 <button type="button"
                                                                     class="btn bg-gradient-danger text-white"
@@ -79,7 +79,7 @@
         $(function() {
             $('#manageData').DataTable({
                 dom: 'Bfrtip',
-                responsive: true,
+                scrollX: true,
                 buttons: [{
                     extend: 'csv',
                     text: 'Export Details'
@@ -88,40 +88,46 @@
         });
 
         function acceptUpgrade(empid) {
-            $.ajax({
-                type: "get",
-                url: "{{ route('upgradedetails') }}",
-                data: {
-                    "empid": empid
-                },
-                success: function(data) {
-                    $("#viewUpgradeModal").modal('show');
-                    $('#UpgradeBody').html(data.html);
-                }
-            });
+            var result = confirm('Do you want to accept the user request for level upgrade?');
+            if (result == true) {
+                $.ajax({
+                    type: "get",
+                    url: "{{ route('upgradedetails') }}",
+                    data: {
+                        "empid": empid
+                    },
+                    success: function(data) {
+                        $("#viewUpgradeModal").modal('show');
+                        $('#UpgradeBody').html(data.html);
+                    }
+                });
+            }
         };
 
         function rejectUpgrade(empid) {
-            $.ajax({
-                url: "{{ route('level_upgrade_reject') }}",
-                type: 'POST',
-                data: {
-                    "_token": "{{ csrf_token() }}",
-                    "empid": empid
-                },
-                success: function(response) {
-                    if (response.success) {
-                        toastr.success(response.message);
-                        setTimeout(() => location.reload(), 2000);
-                    } else {
-                        toastr.error(response.message);
+            var result = confirm('Do you want to decline the user request for level upgrade?');
+            if (result == true) {
+                $.ajax({
+                    url: "{{ route('level_upgrade_reject') }}",
+                    type: 'POST',
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        "empid": empid
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            toastr.success(response.message);
+                            setTimeout(() => location.reload(), 2000);
+                        } else {
+                            toastr.error(response.message);
+                        }
+                    },
+                    error: function(xhr) {
+                        toastr.error(xhr.responseJSON?.message || 'Something went wrong. Please try again.');
                     }
-                },
-                error: function(xhr) {
-                    toastr.error(xhr.responseJSON?.message || 'Something went wrong. Please try again.');
-                }
-            });
-        }
+                });
+            }
+        };
     </script>
 
     <div id="viewUpgradeModal" class="modal fade">
@@ -129,7 +135,7 @@
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white ">
                     <h4 class="modal-title">Upgrade User Details :-</h4>
-                    <button type="button" style="color: #ffffff" class="close" data-dismiss="modal"
+                    <button type="button" style="color: #000000" class="close" data-dismiss="modal"
                         aria-hidden="true">&times;</button>
                 </div>
                 <div class="card-body" id="UpgradeBody">

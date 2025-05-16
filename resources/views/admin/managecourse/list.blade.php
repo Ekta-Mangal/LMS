@@ -6,6 +6,9 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="card card-primary card-outline">
+                            <div class="card-header">
+                                <h1 class="card-title">Course Management</h1>
+                            </div>
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-sm-12">
@@ -22,7 +25,7 @@
                                     <div class="col-md-12">
                                         <div class="table-responsive">
                                             <table id="manageCourseData" class="table table-bordered text-center">
-                                                <thead class="thead-dark">
+                                                <thead class="thead-custom">
                                                     <tr>
                                                         <th>S.No.</th>
                                                         <th>Title</th>
@@ -105,7 +108,7 @@
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white ">
                     <h4 class="modal-title">Enter Course Details Here:-</h4>
-                    <button type="button" style="color: #ffffff" class="close" data-dismiss="modal"
+                    <button type="button" style="color: #000000" class="close" data-dismiss="modal"
                         aria-hidden="true">&times;</button>
                 </div>
                 <div class="card-body" id="addbody">
@@ -136,7 +139,7 @@
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">
                     <h4 class="modal-title">Edit Course Details Here:-</h4>
-                    <button type="button" style="color: #ffffff" class="close" data-dismiss="modal"
+                    <button type="button" style="color: #000000" class="close" data-dismiss="modal"
                         aria-hidden="true">&times;</button>
                 </div>
                 <div class="card-body" id="editbody">

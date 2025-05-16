@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\Enrollment\UserDetailsController;
 use App\Http\Controllers\Admin\ManageCourse\ManageContentController;
 use App\Http\Controllers\Admin\ManageCourse\ManageCourseController;
 use App\Http\Controllers\Admin\ManageCourse\ManageModuleController;
+use App\Http\Controllers\Admin\Users\UserListController;
 use App\Http\Controllers\Certificate\CertifiController;
 use App\Http\Controllers\Course\CourseController;
 use App\Http\Controllers\Dashboard\DashboardController;
@@ -14,10 +15,14 @@ use App\Http\Controllers\Students\ModuleController;
 use App\Http\Controllers\Students\TestController;
 use App\Http\Middleware\CheckUserRole;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\UserController as APIUserController;
+
 
 Route::get('/', function () {
     return view('auth.login');
 });
+
+Route::get('emslogin', [APIUserController::class, 'emslogin']);
 
 Route::middleware('auth')->group(function () {
 
@@ -38,8 +43,8 @@ Route::middleware('auth')->group(function () {
 
     ############################ Certificate Routes ###############################
     Route::get('/certificate', [CertifiController::class, 'view'])->name('certificate');
-    Route::get('/layout', [CertifiController::class, 'layout'])->name('layout');
     Route::get('/certificate_download', [CertifiController::class, 'download'])->name('certificate.download');
+    Route::get('/layout', [CertifiController::class, 'layout'])->name('certificate.layout');
 
     ############################ Students Routes ###############################
     Route::get('/moduleDetails', [ModuleController::class, 'view'])->name('moduleDetails');
@@ -63,6 +68,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/upgradedetails', [LevelUpgradeController::class, 'viewdetails'])->name('upgradedetails');
         Route::post('/level_upgrade_accept', [LevelUpgradeController::class, 'accept'])->name('level_upgrade_accept');
         Route::post('/level_upgrade_reject', [LevelUpgradeController::class, 'reject'])->name('level_upgrade_reject');
+
+        ############################ Users List Routes ###############################
+        Route::get('/userslist', [UserListController::class, 'view'])->name('userslist');
 
         ############################ Enrollment Routes ###############################
         Route::get('/userdetails', [UserDetailsController::class, 'view'])->name('userdetails');

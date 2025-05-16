@@ -3,52 +3,57 @@
     <div class="card card-primary card-outline">
         <div class="card-body">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for="empid">Employee ID</label>
                         <input type="text" name="empid" id="empid" class="form-control"
                             value="{{ $userDetails->empid }}" readonly>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="name" class="form-control" value="{{ $userDetails->name }}" readonly>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for="location">Location</label>
                         <input type="text" class="form-control" value="{{ $userDetails->location }}" readonly>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="client_name">Client</label>
+                        <input type="text" class="form-control" value="{{ $userDetails->client_name }}" readonly>
+                    </div>
+                </div>
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for="process">Process</label>
                         <input type="text" class="form-control" value="{{ $userDetails->process }}" readonly>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for="subprocess">Sub Process</label>
                         <input type="text" class="form-control" value="{{ $userDetails->subprocess }}" readonly>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for="reporting_manager">Reporting Manager</label>
                         <input type="text" class="form-control" value="{{ $userDetails->reporting_manager }}"
                             readonly>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for="designation">Designation<span class="text-danger">*</span></label>
-                        <input name="designation" type="text" class="form-control" id="designation"
-                            placeholder="Enter New Designation Here...">
+                        <input type="text" class="form-control" value="{{ $userDetails->designation }}" readonly>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label>User Type<span class="text-danger">*</span></label>
                         <select class="form-control select2bs4" style="width: 100%;" name="role" id="role">
@@ -58,7 +63,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label>Badge Level<span class="text-danger">*</span></label>
                         <select class="form-control select2bs4" style="width: 100%;" name="badge_level"
@@ -85,9 +90,6 @@
         $('#UpgradeDetails').validate({
             rules: {
                 user_id: {
-                    required: true
-                },
-                designation: {
                     required: true
                 },
                 role: {

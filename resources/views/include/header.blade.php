@@ -82,4 +82,43 @@
     body.loading .overlay {
         display: block;
     }
+
+    .custom-sidebar {
+        background-color: #1C2649 !important;
+        color: #ffffff !important;
+    }
+
+    /* Active sidebar link: highlight in grey */
+    .custom-sidebar .nav-link.active {
+        background-color: #6c757d !important;
+    }
+
+    /* Hover effect for sidebar links */
+    .custom-sidebar .nav-link:hover {
+        background-color: rgba(255, 255, 255, 0.2) !important;
+        color: #ffffff !important;
+    }
+
+    .nav-item a.nav-link p {
+        color: #ffffff !important;
+    }
+
+    .card.card-primary {
+        border-top: 3px solid #e76448;
+    }
+
+    .thead-custom {
+        background-color: #1C2649 !important;
+        color: #ffffff !important;
+    }
+
+    .card-primary:not(.card-outline)>.card-header {
+        background-color: #e76448;
+        color: #fff;
+    }
+
+    .modal-header {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+    }
 </style>

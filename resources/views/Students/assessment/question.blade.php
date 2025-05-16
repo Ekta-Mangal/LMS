@@ -15,7 +15,7 @@
                             <div class="card-body">
                                 <div class="row justify-content-center">
                                     <div class="col-md-12 text-center">
-                                        <h5><b>Assessment Level - 1 Course On QMS & Its Applications</b></h5>
+                                        <h5><b>Assessment {{ $title->course_title ?? 'N/A' }}</b></h5>
                                     </div>
                                 </div>
                             </div>

@@ -25,7 +25,7 @@
                             <div class="card-body">
                                 <div class="row justify-content-center">
                                     <div class="col-md-12 text-center">
-                                        <h5><b>Level - 1 Course On QMS & Its Applications</b></h5>
+                                        <h5><b>Level 1 - Silver Certification QMS</b></h5>
                                     </div>
                                 </div>
                                 @if ($modules->isNotEmpty())
@@ -61,7 +61,7 @@
                                                                         <button type="button"
                                                                             class="btn bg-gradient-secondary text-white form-control btn-spacing"
                                                                             disabled>
-                                                                            Request Submitted to Approver
+                                                                            Request Submitted for Approval
                                                                         </button>
                                                                     @elseif ($module->approval_status === 'Approved')
                                                                         <button type="button"
@@ -138,8 +138,9 @@
                                                         You have passed the Assessment.
                                                     </p>
                                                     <p class="text-dark font-weight-medium">
-                                                        You have Achieved <strong>Silver Badge</strong> and Certification of
-                                                        Completion is Unlocked.
+                                                        You have earned the <strong>Silver Badge</strong> and your
+                                                        certificate of
+                                                        Completion has been unlocked!
                                                     </p>
                                                 </div>
                                             </div>
@@ -148,7 +149,7 @@
                                                     style="background-color: #f0f7ff;">
                                                     <div class="card-body py-4">
                                                         <p class="h4 font-weight-bold text-dark">
-                                                            🎯 You are Eligible for L2 Course on QMS & ITS Application.
+                                                            🎯 You are eligible for L2 Course on QMS.
                                                         </p>
                                                         <!-- Buttons in one row with proper gap -->
                                                         <div class="d-flex justify-content-center mt-3">
@@ -187,10 +188,10 @@
                                                     style="background-color: #f0f7ff;">
                                                     <div class="card-body py-4">
                                                         <p class="h4 font-weight-bold text-dark">
-                                                            🎯 You are Eligible for L2 Course on QMS & ITS Application.
+                                                            🎯 You are eligible for L2 Course on QMS.
                                                         </p>
                                                         <p class="font-weight-bold text-dark">
-                                                            Click on <span class="text-primary">Upgrade</span> Below to
+                                                            Click <span class="text-primary">'Upgrade'</span> below to
                                                             Start
                                                             your
                                                             course.
@@ -249,7 +250,8 @@
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white ">
                     <h4 class="modal-title">Module Details :-</h4>
-                    <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+                    <button type="button" style="color: #000000" class="close" data-dismiss="modal"
+                        aria-hidden="true">&times;</button>
                 </div>
                 <div class="card-body" id="ModuleBody"></div>
             </div>
@@ -338,14 +340,11 @@
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">
                     <h4 class="modal-title">Module Study Material :-</h4>
-                    <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+                    <button type="button" style="color: #000000" class="close" data-dismiss="modal"
+                        aria-hidden="true">&times;</button>
                 </div>
                 <div class="modal-body" id="ContentBody"></div>
             </div>
         </div>
     </div>
-
-
-
-
 @endsection

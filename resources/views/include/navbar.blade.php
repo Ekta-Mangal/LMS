@@ -32,7 +32,8 @@
         </nav>
         <form method="POST" action="{{ route('logout') }}" x-data>
             @csrf
-            <aside class="main-sidebar sidebar-dark-primary  elevation-4">
+            {{-- <aside class="main-sidebar sidebar-dark-primary elevation-4"> --}}
+            <aside class="main-sidebar custom-sidebar elevation-4">
                 <div class="sidebar">
                     <div class="user-panel d-flex"
                         style="background-color: white;height: 3rem; width: 20.2rem; margin-left: -0.5rem; ">
@@ -63,6 +64,13 @@
                             </li>
                             @if (Auth::user()->role === 'Admin')
                                 <li class="nav-item">
+                                    <a href="{{ route('userslist') }}"
+                                        class="nav-link {{ Request::segment(1) == 'userslist' || Request::segment(1) == '' ? 'active' : '' }}">
+                                        <i class="nav-icon fas fa-users"></i>
+                                        <p>Users List</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
                                     <a href="{{ route('userdetails') }}"
                                         class="nav-link {{ Request::segment(1) == 'userdetails' || Request::segment(1) == '' ? 'active' : '' }}">
                                         <i class="nav-icon fas fa-table"></i>
@@ -70,11 +78,14 @@
                                     </a>
                                 </li>
                                 <li
-                                    class="nav-item {{ in_array(request()->path(), ['manageCourse.list', 'manageModule.list']) ? 'menu-open' : '' }}">
+                                    class="nav-item {{ request()->routeIs('manageCourse.list', 'manageModule.list', 'manageContent.list') ? 'menu-open' : '' }}">
                                     <a href="#"
-                                        class="nav-link {{ in_array(request()->path(), ['manageCourse.list', 'manageModule.list']) ? 'active' : '' }}">
+                                        class="nav-link {{ request()->routeIs('manageCourse.list', 'manageModule.list', 'manageContent.list') ? 'active' : '' }}">
                                         <i class="nav-icon fas fa-graduation-cap"></i>
-                                        <p>Manage Courses<i class="right fas fa-angle-left"></i></p>
+                                        <p>
+                                            Manage Courses
+                                            <i class="right fas fa-angle-left"></i>
+                                        </p>
                                     </a>
                                     <ul class="nav nav-treeview">
                                         <li class="nav-item">
@@ -100,6 +111,8 @@
                                         </li>
                                     </ul>
                                 </li>
+                            @endif
+                            @if (Auth::user()->role === 'Admin' || Auth::user()->role === 'L3')
                                 <li
                                     class="nav-item {{ in_array(request()->path(), ['module_completetion', 'level_upgrade_approval']) ? 'menu-open' : '' }}">
                                     <a href="#"
@@ -133,13 +146,6 @@
                                         <p>Course Modules</p>
                                     </a>
                                 </li>
-                                {{-- <li class="nav-item">
-                                    <a href="{{ route('toolkit') }}"
-                                        class="nav-link {{ Request::segment(1) == 'toolkit' || Request::segment(1) == '' ? 'active' : '' }}">
-                                        <i class="nav-icon fas fa-tools"></i>
-                                        <p>Tool Kit</p>
-                                    </a>
-                                </li> --}}
                                 <li class="nav-item">
                                     <a href="{{ route('certificate') }}"
                                         class="nav-link {{ Request::segment(1) == 'certificate' || Request::segment(1) == '' ? 'active' : '' }}">

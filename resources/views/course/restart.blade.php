@@ -4,11 +4,11 @@
     <div class="card-body">
         <p style="font-size: 18px; font-weight: bold; margin-bottom: 10px;">Hi {{ Auth::user()->name }}</p>
 
-        <p style="font-size: 16px; font-weight: bold; color: #333;">You Have Failed Re-Attempt Test Too..</p>
+        <p style="font-size: 16px; font-weight: bold; color: #333;">You have failed the re-attempt test as well.</p>
 
         <p style="font-size: 14px; color: #333; line-height: 1.5;">
-            You must complete your course from the beginning...
-            All your progress of the course will be reset.
+            You must complete the course from the beginning.
+            All your progress in the course will be reset.
         </p>
 
         <!-- OK Button -->

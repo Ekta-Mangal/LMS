@@ -11,12 +11,11 @@
                                 <h3 class="card-title">Certificates Achievement Table</h3>
                             </div>
                             <div class="card-body">
-                                <!-- Achievements Table -->
                                 <div class="row mt-4">
                                     <div class="col-md-12">
                                         <div class="table-responsive">
-                                            <table class="table table-bordered text-center"> <!-- Added 'text-center' -->
-                                                <thead class="thead-dark">
+                                            <table class="table table-bordered text-center">
+                                                <thead class="thead-custom">
                                                     <tr>
                                                         <th class="text-center">S.No.</th>
                                                         <th class="text-center">Course Name</th>

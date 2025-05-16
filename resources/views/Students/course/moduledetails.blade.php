@@ -3,7 +3,7 @@
         <!-- Course Title -->
         <div
             style="text-align: center; font-size: 25px; font-weight: bold; padding: 20px; border: 1px solid #ccc; margin-bottom: 20px;">
-            Level - 1 Course On QMS & Its Applications
+            {{ $moduleDetails->course_title }}
         </div>
 
         <!-- Module Details Button -->

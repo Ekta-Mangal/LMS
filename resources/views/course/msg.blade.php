@@ -3,10 +3,11 @@
     <div class="card-body">
         <!-- Success Message -->
         <p style="font-size: 16px; font-weight: bold;">
-            You Have Successfully Enrolled for the Course. Click on Proceed button below to continue with your Course.
+            "You Have Successfully enrolled in the course. Click the 'Proceed' button below to continue with your
+            course.
         </p>
 
-        <p style="font-size: 18px; font-weight: bold;">ALL THE BEST!!!!</p>
+        <p style="font-size: 18px; font-weight: bold;">ALL THE BEST!!!!"</p>
 
         <!-- Proceed Button as Link -->
         <a href="{{ route('coursemodules') }}" class="btn btn-primary"
